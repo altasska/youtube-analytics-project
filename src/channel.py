@@ -24,6 +24,37 @@ class Channel:
         self.view_count = None
         self._get_channel_info()
 
+    def __str__(self):
+        """
+        магимческий метод для возвращения в строковом варианте название канала
+        и ссылки на него по указанному шаблону
+        """
+        return f"{self.title} ({self.url})"
+
+    def __add__(self, other):
+        """
+        магический метод для сложения  (в данном случие по числу подписчиков)
+        """
+        return int(self.subscribers_count) + int(other.subscribers_count)
+
+    def __sub__(self, other):
+        """
+        магический метод для вычитания (в данном случие по числу подписчиков)
+        """
+        return int(self.subscribers_count) - int(other.subscribers_count)
+
+    def __gt__(self, other):
+        """
+        магический метод для сравнения по параметру больше/меньше
+        """
+        return int(self.subscribers_count) > int(other.subscribers_count)
+
+    def __ge__(self, other):
+        """
+        магический метод для сравнения по параметру больше или равно/меньше или равно
+        """
+        return int(self.subscribers_count) >= int(other.subscribers_count)
+
     @property
     def channel_id(self):
         """
