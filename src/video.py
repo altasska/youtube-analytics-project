@@ -1,6 +1,6 @@
 from googleapiclient.discovery import build
 import os
-
+import isodate
 
 class Video:
 
@@ -32,17 +32,23 @@ class Video:
         api_key = os.environ.get('API_KEY')
         youtube = build('youtube', 'v3', developerKey=api_key)
         video = youtube.videos().list(
-            part='snippet,statistics',
+            part='snippet,statistics,contentDetails',
             id=self.video_id
         ).execute()  # запрос к API и получение данных в json-подобном формате
 
         video_info = video['items'][0]['snippet']  # для хранения общей инфы о видео
         statistics = video['items'][0]['statistics']  # для хранения статистической инфы
+        content_details = video['items'][0]['contentDetails'] # для хранения дополнительной инфы, в т.ч и о длительности видео
 
         self.title = video_info['title']
         self.url = f"https://www.youtube.com/watch?v={self.video_id}"
         self.view_count = int(statistics['viewCount'])
         self.likes = int(statistics['likeCount'])
+        duration_string = content_details['duration'] # данные в строковом формате ISO 8601
+        self.duration = self._parse_duration(duration_string) # преобразование в читабельный формат
+
+    def _parse_duration(self, duration_string):
+        return isodate.parse_duration(duration_string) # возвращает объект <class 'datetime.timedelta'>
 
 
 class PLVideo(Video):
