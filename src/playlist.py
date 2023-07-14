@@ -10,6 +10,7 @@ class PlayList:
     - название плейлиста
     - ссылка на плейлист
     """
+
     def __init__(self, playlist_id: str):
         self.playlist_id = playlist_id
         self.title = None

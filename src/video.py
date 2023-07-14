@@ -2,6 +2,7 @@ from googleapiclient.discovery import build
 import os
 import isodate
 
+
 class Video:
 
     def __init__(self, video_id: str):
@@ -38,24 +39,25 @@ class Video:
 
         video_info = video['items'][0]['snippet']  # для хранения общей инфы о видео
         statistics = video['items'][0]['statistics']  # для хранения статистической инфы
-        content_details = video['items'][0]['contentDetails'] # для хранения дополнительной инфы, в т.ч и о длительности видео
+        content_details = video['items'][0][
+            'contentDetails']  # для хранения дополнительной инфы, в т.ч и о длительности видео
 
         self.title = video_info['title']
         self.url = f"https://www.youtube.com/watch?v={self.video_id}"
         self.view_count = int(statistics['viewCount'])
         self.likes = int(statistics['likeCount'])
-        duration_string = content_details['duration'] # данные в строковом формате ISO 8601
-        self.duration = self._parse_duration(duration_string) # преобразование в читабельный формат
+        duration_string = content_details['duration']  # данные в строковом формате ISO 8601
+        self.duration = self._parse_duration(duration_string)  # преобразование в читабельный формат
 
     def _parse_duration(self, duration_string):
-        return isodate.parse_duration(duration_string) # возвращает объект <class 'datetime.timedelta'>
+        return isodate.parse_duration(duration_string)  # возвращает объект <class 'datetime.timedelta'>
 
 
 class PLVideo(Video):
     """
    класс для видео `PLVideo`, наследуемый от класса Video
     """
+
     def __init__(self, video_id: str, playlist_id: str):
         super().__init__(video_id)
         self.playlist_id = playlist_id
-
