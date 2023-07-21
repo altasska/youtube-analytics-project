@@ -77,8 +77,8 @@ class PlayList:
         for item in video_response['items']:
             video_id = item['contentDetails']['videoId']
             video = PLVideo(video_id, self.playlist_id)
-            if video.likes > best_likes:
+            if video.like_count > best_likes:
                 best_video_id = video_id
-                best_likes = video.likes
+                best_likes = video.like_count
 
         return f"https://youtu.be/{best_video_id}"
